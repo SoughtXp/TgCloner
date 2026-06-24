@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TGClonerX - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>TGClonerX</h1>
+            </div>
+        </header>
+
+        <div class="dashboard-layout">
+            <div class="left-column">
+                <div class="card margin-bottom">
+                    <div class="card-header">
+                        <h2>API & Session</h2>
+                        <div class="header-badges">
+                            <span class="status-badge disconnected" id="api-status-badge">No API</span>
+                            <span class="status-badge disconnected" id="auth-status-badge">Disconnected</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="section-block" id="api-section">
+                            <form id="config-form" class="inline-form">
+                                <div class="form-group">
+                                    <label for="api-id">API ID</label>
+                                    <input type="number" id="api-id" placeholder="API ID" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="api-hash">API HASH</label>
+                                    <input type="text" id="api-hash" placeholder="API HASH" required>
+                                </div>
+                                <div class="form-group button-group">
+                                    <label>&nbsp;</label>
+                                    <button type="submit" class="btn primary">Save API</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="section-block" id="auth-section">
+                            <div id="step-phone" class="auth-step active">
+                                <form id="phone-form" class="inline-form">
+                                    <div class="form-group">
+                                        <label for="phone-number">Phone Number</label>
+                                        <input type="text" id="phone-number" placeholder="+1234567890" required>
+                                    </div>
+                                    <div class="form-group button-group">
+                                        <label>&nbsp;</label>
+                                        <button type="submit" class="btn primary">Send Code</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div id="step-code" class="auth-step">
+                                <form id="code-form" class="inline-form">
+                                    <div class="form-group">
+                                        <label for="verification-code">Verification Code</label>
+                                        <input type="text" id="verification-code" placeholder="Enter code" required>
+                                    </div>
+                                    <div class="form-group button-group">
+                                        <label>&nbsp;</label>
+                                        <div class="btn-group">
+                                            <button type="submit" class="btn primary">Sign In</button>
+                                            <button type="button" class="btn secondary back-to-phone">Back</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div id="step-password" class="auth-step">
+                                <form id="password-form" class="inline-form">
+                                    <div class="form-group">
+                                        <label for="2fa-password">2FA Password</label>
+                                        <input type="password" id="2fa-password" placeholder="Password" required>
+                                    </div>
+                                    <div class="form-group button-group">
+                                        <label>&nbsp;</label>
+                                        <button type="submit" class="btn primary">Confirm 2FA</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div id="step-authorized" class="auth-step">
+                                <div class="auth-success-row">
+                                    <span class="checkmark">✓</span>
+                                    <span class="authorized-label" id="authorized-phone-label">Authorized</span>
+                                    <button type="button" id="btn-logout" class="btn danger-link">Switch Account / Change Number</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Clone Configurations</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="section-block" id="selectors-section">
+                            <div class="selectors-row">
+                                <div class="form-group">
+                                    <label for="source-chat">Source Channel</label>
+                                    <select id="source-chat" disabled>
+                                        <option value="">Waiting for connection...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="dest-chat">Destination Channel</label>
+                                    <select id="dest-chat" disabled>
+                                        <option value="">Waiting for connection...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group button-group">
+                                    <label>&nbsp;</label>
+                                    <button id="btn-refresh-chats" class="btn secondary" disabled>🔄 Refresh</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section-block" id="filters-section">
+                            <div class="filters-row">
+                                <div class="form-group">
+                                    <label for="blocked-words">Blocked Words (comma separated)</label>
+                                    <input type="text" id="blocked-words" placeholder="e.g. promo, click here, ads">
+                                </div>
+                                <div class="form-group checkbox-group-wrapper">
+                                    <label>&nbsp;</label>
+                                    <div class="checkbox-group">
+                                        <label><input type="checkbox" id="skip-links"> Skip Links</label>
+                                        <label><input type="checkbox" id="clone-text" checked> Clone Text</label>
+                                        <label><input type="checkbox" id="clone-media" checked> Clone Media</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="card margin-bottom">
+                    <div class="card-header">
+                        <h2>Execution Controls</h2>
+                        <span class="status-badge idle" id="clone-status-badge">Stopped</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="actions-row">
+                            <button id="btn-start-clone" class="btn success" disabled>Start Cloning</button>
+                            <button id="btn-stop-clone" class="btn danger" disabled>Stop</button>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-info">
+                                <span>Cloned: <strong id="progress-counter">0</strong></span>
+                                <span id="current-action">Idle</span>
+                            </div>
+                            <div class="progress-bar-wrapper">
+                                <div class="progress-bar-fill" id="progress-bar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card log-card">
+                    <div class="terminal-wrapper">
+                        <div class="terminal-header">
+                            <span class="terminal-title">tgclonerx_process.log</span>
+                        </div>
+                        <div class="terminal-body" id="terminal-logs">
+                            <div class="terminal-line system-line">[SYSTEM] Logging terminal initialized. Ready...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
